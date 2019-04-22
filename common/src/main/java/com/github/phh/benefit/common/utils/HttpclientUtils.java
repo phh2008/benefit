@@ -41,6 +41,7 @@ public class HttpclientUtils {
     private static final Logger log = LoggerFactory.getLogger(HttpclientUtils.class);
     private static PoolingHttpClientConnectionManager CONNMGR_WITHOUT_CERT;
     private static HttpClient CLIENT_WITHOUT_CERT;
+    private static final ContentType TEXT_XML_UTF_8 = ContentType.create("text/xml", Consts.UTF_8);
 
     static {
         final Registry<ConnectionSocketFactory> sfr = RegistryBuilder.<ConnectionSocketFactory>create()
@@ -110,7 +111,7 @@ public class HttpclientUtils {
     public static Try<String> postXml(String url, String xml, Header[] headers) {
         Request request = Request.Post(url);
         if (xml != null) {
-            request.bodyString(xml, ContentType.create("text/xml", Consts.UTF_8));
+            request.bodyString(xml, TEXT_XML_UTF_8);
         }
         if (headers != null && headers.length > 0) {
             request.setHeaders(headers);
@@ -180,11 +181,11 @@ public class HttpclientUtils {
      * @param param
      * @return
      */
-    public static List<NameValuePair> map2ValuePair(Map<String, String> param) {
+    public static List<NameValuePair> map2ValuePair(Map<String, Object> param) {
         List<NameValuePair> params = new ArrayList<>();
-        Set<Map.Entry<String, String>> set = param.entrySet();
+        Set<Map.Entry<String, Object>> set = param.entrySet();
         set.forEach(e -> {
-            params.add(new BasicNameValuePair(e.getKey(), e.getValue()));
+            params.add(new BasicNameValuePair(e.getKey(), String.valueOf(e.getValue())));
         });
         return params;
     }

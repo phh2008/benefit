@@ -1,4 +1,4 @@
-package com.github.phh.benefit.common.test;
+package com.github.phh.benefit.common;
 
 import org.junit.Test;
 

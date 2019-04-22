@@ -1,4 +1,4 @@
-package com.github.phh.benefit.common.test;
+package com.github.phh.benefit.common;
 
 import com.github.phh.benefit.common.utils.LocalDateUtils;
 import org.junit.Test;
