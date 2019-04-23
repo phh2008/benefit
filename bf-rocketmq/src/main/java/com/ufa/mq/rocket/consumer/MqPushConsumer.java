@@ -19,12 +19,12 @@ import java.util.function.BiConsumer;
  *
  * @author phh
  */
-public class DefMQPushConsumer extends DefaultMQPushConsumer {
+public class MqPushConsumer extends DefaultMQPushConsumer {
 
     /**
      * 日志
      */
-    public static final Logger LOGGER = LoggerFactory.getLogger(DefMQPushConsumer.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(MqPushConsumer.class);
 
     /**
      * Spring bean init-method
@@ -59,9 +59,9 @@ public class DefMQPushConsumer extends DefaultMQPushConsumer {
             }
             //启动
             this.start();
-            LOGGER.info("DefMQPushConsumer is start !!! groupName:{},namesrvAddr:{}", this.getConsumerGroup(), this.getNamesrvAddr());
+            LOGGER.info("MqPushConsumer is start !!! groupName:{},namesrvAddr:{}", this.getConsumerGroup(), this.getNamesrvAddr());
         } catch (Exception e) {
-            LOGGER.error("DefMQPushConsumer is start !!! groupName:{},namesrvAddr:{}", this.getConsumerGroup(), this.getNamesrvAddr(), e);
+            LOGGER.error("MqPushConsumer is start !!! groupName:{},namesrvAddr:{}", this.getConsumerGroup(), this.getNamesrvAddr(), e);
             throw new RocketMQException(e.getMessage());
         }
     }

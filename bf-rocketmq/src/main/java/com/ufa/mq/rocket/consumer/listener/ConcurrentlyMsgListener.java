@@ -2,9 +2,7 @@ package com.ufa.mq.rocket.consumer.listener;
 
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.ufa.mq.rocket.handler.ConcurrentlyMessageHandler;
-import com.ufa.mq.rocket.message.MessageDecoder;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
@@ -28,21 +26,6 @@ public class ConcurrentlyMsgListener implements MessageListenerConcurrently {
     private static final Logger logger = LoggerFactory.getLogger(ConcurrentlyMsgListener.class);
 
     private Map<String, Map<String, ConcurrentlyMessageHandler>> topicToTagHandler;
-
-    public void init() {
-        if (topicToTagHandler == null || topicToTagHandler.isEmpty()) {
-            throw new IllegalArgumentException("You must config topicToTagHandlerList in ConcurrentlyMsgListener");
-        }
-
-        for (Map.Entry<String, Map<String, ConcurrentlyMessageHandler>> entry : topicToTagHandler.entrySet()) {
-            String topic = entry.getKey();
-            Map<String, ConcurrentlyMessageHandler> tagToHandler = entry.getValue();
-
-            if (tagToHandler == null || tagToHandler.isEmpty()) {
-                throw new IllegalArgumentException("You must config handler for topic=" + topic);
-            }
-        }
-    }
 
     @Override
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
@@ -79,8 +62,7 @@ public class ConcurrentlyMsgListener implements MessageListenerConcurrently {
                     throw new RuntimeException(errMsg);
                 }
             }
-            MessageDecoder decoder = messageHandler.getMessageDecoder();
-            results.add(messageHandler.process(decoder.decode(message.getBody()), message, context));
+            results.add(messageHandler.process(messageHandler.decode(message.getBody()), message, context));
         }
         //如果有消息状态(重发)
         for (ConsumeConcurrentlyStatus st : results) {

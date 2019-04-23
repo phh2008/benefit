@@ -1,6 +1,5 @@
 package com.ufa.mq.rocket.handler;
 
-import com.ufa.mq.rocket.message.MessageDecoder;
 import org.apache.rocketmq.client.consumer.listener.ConsumeOrderlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeOrderlyStatus;
 import org.apache.rocketmq.common.message.MessageExt;
@@ -12,7 +11,21 @@ import org.apache.rocketmq.common.message.MessageExt;
  */
 public interface OrderlyMessageHandler<T> {
 
+    /**
+     * 消息处理
+     *
+     * @param data
+     * @param message
+     * @param context
+     * @return
+     */
     ConsumeOrderlyStatus process(T data, MessageExt message, ConsumeOrderlyContext context);
 
-    MessageDecoder<T> getMessageDecoder();
+    /**
+     * 解码
+     * message.getBody to T
+     *
+     * @return
+     */
+    T decode(byte[] message);
 }

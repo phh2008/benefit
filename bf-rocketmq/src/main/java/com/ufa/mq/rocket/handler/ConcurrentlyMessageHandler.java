@@ -1,6 +1,5 @@
 package com.ufa.mq.rocket.handler;
 
-import com.ufa.mq.rocket.message.MessageDecoder;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.common.message.MessageExt;
@@ -21,9 +20,10 @@ public interface ConcurrentlyMessageHandler<T> {
     ConsumeConcurrentlyStatus process(T data, MessageExt message, ConsumeConcurrentlyContext context);
 
     /**
-     * 获取解码器
+     * 解码
+     * message.getBody to T
      *
      * @return
      */
-    MessageDecoder<T> getMessageDecoder();
+    T decode(byte[] message);
 }

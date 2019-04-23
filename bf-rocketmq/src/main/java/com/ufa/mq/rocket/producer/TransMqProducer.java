@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
  * @version V1.0
  * @date 2018/1/3
  */
-public class TransMQProducer extends TransactionMQProducer {
+public class TransMqProducer extends TransactionMQProducer {
 
-    private static final Logger logger = LoggerFactory.getLogger(TransMQProducer.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransMqProducer.class);
 
 
     /**
@@ -65,10 +65,10 @@ public class TransMQProducer extends TransactionMQProducer {
         }
         try {
             this.start();
-            logger.info(String.format("TransMQProducer is start ! groupName:[%s],namesrvAddr:[%s]"
+            logger.info(String.format("TransMqProducer is start ! groupName:[%s],namesrvAddr:[%s]"
                     , this.getProducerGroup(), this.getNamesrvAddr()));
         } catch (MQClientException e) {
-            logger.error(String.format("TransMQProducer is error %s", e.getMessage()), e);
+            logger.error(String.format("TransMqProducer is error %s", e.getMessage()), e);
             throw new RocketMQException(e);
         }
     }

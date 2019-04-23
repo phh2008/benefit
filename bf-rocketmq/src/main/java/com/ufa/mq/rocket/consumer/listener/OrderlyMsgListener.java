@@ -3,7 +3,6 @@ package com.ufa.mq.rocket.consumer.listener;
 
 import com.google.common.base.Strings;
 import com.ufa.mq.rocket.handler.OrderlyMessageHandler;
-import com.ufa.mq.rocket.message.MessageDecoder;
 import org.apache.rocketmq.client.consumer.listener.ConsumeOrderlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeOrderlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerOrderly;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 并发消息监听器
+ * 有序消息监听器
  *
  * @author phh
  * @version V1.0
@@ -27,19 +26,6 @@ public class OrderlyMsgListener implements MessageListenerOrderly {
     private static final Logger logger = LoggerFactory.getLogger(OrderlyMsgListener.class);
 
     private Map<String, Map<String, OrderlyMessageHandler>> topicToTagHandler;
-
-    public void init() {
-        if (topicToTagHandler == null || topicToTagHandler.isEmpty()) {
-            throw new IllegalArgumentException("You must config topicToTagHandlerList in OrderlyMsgListener");
-        }
-        for (Map.Entry<String, Map<String, OrderlyMessageHandler>> entry : topicToTagHandler.entrySet()) {
-            String topic = entry.getKey();
-            Map<String, OrderlyMessageHandler> tagToHandler = entry.getValue();
-            if (tagToHandler == null || tagToHandler.isEmpty()) {
-                throw new IllegalArgumentException("You must config handler for topic=" + topic);
-            }
-        }
-    }
 
     @Override
     public ConsumeOrderlyStatus consumeMessage(List<MessageExt> msgs, ConsumeOrderlyContext context) {
@@ -76,8 +62,7 @@ public class OrderlyMsgListener implements MessageListenerOrderly {
                     throw new RuntimeException(errMsg);
                 }
             }
-            MessageDecoder decoder = messageHandler.getMessageDecoder();
-            results.add(messageHandler.process(decoder.decode(message.getBody()), message, context));
+            results.add(messageHandler.process(messageHandler.decode(message.getBody()), message, context));
         }
         //如果有消息状态(重发)
         for (ConsumeOrderlyStatus st : results) {

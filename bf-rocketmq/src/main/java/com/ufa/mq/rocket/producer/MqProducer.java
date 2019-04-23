@@ -2,7 +2,6 @@ package com.ufa.mq.rocket.producer;
 
 import com.google.common.base.Strings;
 import com.ufa.mq.rocket.exception.RocketMQException;
-import com.ufa.mq.rocket.message.AbstractMessage;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendCallback;
@@ -19,11 +18,11 @@ import java.util.function.BiConsumer;
  *
  * @author phh
  */
-public class DefMQProducer extends DefaultMQProducer {
+public class MqProducer extends DefaultMQProducer {
     /**
      * 日志
      */
-    public static final Logger LOGGER = LoggerFactory.getLogger(DefMQProducer.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(MqProducer.class);
 
     /**
      * Spring bean init-method
@@ -40,26 +39,14 @@ public class DefMQProducer extends DefaultMQProducer {
         }
         try {
             this.start();
-            LOGGER.info(String.format("DefMQProducer is start ! groupName:[%s],namesrvAddr:[%s]"
+            LOGGER.info(String.format("MqProducer is start ! groupName:[%s],namesrvAddr:[%s]"
                     , this.getProducerGroup(), this.getNamesrvAddr()));
         } catch (MQClientException e) {
-            LOGGER.error(String.format("DefMQProducer is error %s", e.getMessage()), e);
+            LOGGER.error(String.format("MqProducer is error %s", e.getMessage()), e);
             throw new RocketMQException(e);
         }
     }
 
-    public <T> SendResult send(AbstractMessage<T> message) {
-        try {
-            return this.send(message.getMessage());
-        } catch (Exception e) {
-            LOGGER.error("send fail", e);
-            throw new RocketMQException(e);
-        }
-    }
-
-    public <T> void sendAsync(AbstractMessage<T> message, BiConsumer<SendResult, Throwable> consumer) {
-        sendAsyncExtract(consumer, message.getMessage());
-    }
 
     /**
      * 异步发送
