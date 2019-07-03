@@ -101,7 +101,7 @@ public class BeanMapUtils {
      * @param <T>
      * @return
      */
-    public static <T> List<T> mapToBean(List<Map<String, Object>> mapList, Class<T> clazz) {
+    public static <T> List<T> mapToBeans(List<Map<String, Object>> mapList, Class<T> clazz) {
         if (mapList == null || mapList.size() == 0) {
             return new ArrayList<>(0);
         }
