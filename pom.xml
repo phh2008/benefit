@@ -27,7 +27,7 @@
         <jackson.version>2.9.6</jackson.version>
         <guava.version>21.0</guava.version>
         <thumbnailator.version>0.4.8</thumbnailator.version>
-        <httpclient.version>4.5.2</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <resilience4j.version>0.13.2</resilience4j.version>
         <objenesis.version>3.0.1</objenesis.version>
         <rocketmq.version>4.1.0-incubating</rocketmq.version>
